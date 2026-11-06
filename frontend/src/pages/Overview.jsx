@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api'
 import { usePoll, timeAgo, fmtClock } from '../hooks'
-import { Panel, StatCard, SevBadge, Empty } from '../components/ui'
+import { Panel, StatCard, SevBadge, Empty, SwitchChip, Alert } from '../components/ui'
 import { STATUS, AGENT_STATUS, SEVERITY } from '../constants'
 
 function StageStrip({ status }) {
@@ -9,7 +9,7 @@ function StageStrip({ status }) {
   const idx = Math.max(0, order.indexOf(status))
   const labels = ['Detect', 'Triage', 'Debug', 'Approve', 'Resolve']
   const cur =
-    status === 'rolling_back' || status === 'deploying' ? 3 : status === 'blocked' ? 3 : Math.min(idx, 4)
+    status === 'rolling_back' || status === 'deploying' || status === 'blocked' ? 3 : Math.min(idx, 4)
 
   return (
     <div className="flex items-center gap-1.5">
@@ -45,20 +45,20 @@ export default function Overview({ stats }) {
 
   return (
     <div className="space-y-5 rise">
-      {/* hero */}
-      <div className="panel p-5 relative overflow-hidden">
-        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="relative flex flex-wrap items-end gap-6">
+      {/* Hero */}
+      <div className="panel p-6 relative overflow-hidden glow-cyan">
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-cyan-500/10 blur-[100px]" />
+        <div className="relative z-10 flex flex-wrap items-end gap-6">
           <div>
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cyan-400/80 font-semibold">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 live-dot" /> AI Incident Command Center
             </div>
-            <h1 className="mt-2 text-[26px] font-extrabold tracking-tight">
+            <h1 className="mt-2 text-[28px] font-extrabold tracking-tight">
               {active.length > 0 ? (
                 <>
                   <span className="text-rose-400">{active.length} active incident{active.length > 1 ? 's' : ''}</span>
                   <span className="text-slate-600"> · </span>
-                  <span className="text-slate-300">all systems being watched</span>
+                  <span className="text-slate-300">all systems under AI watch</span>
                 </>
               ) : (
                 <>
@@ -70,22 +70,22 @@ export default function Overview({ stats }) {
             </h1>
             <p className="mt-1.5 text-[13px] text-slate-500">
               Monitoring, triaging and resolving production issues with autonomous AI agents — every
-              critical action gated by human approval.
+              critical action gated by human approval via Switch.
             </p>
           </div>
 
           <div className="ml-auto flex gap-6">
             <div className="text-right">
               <div className="text-[11px] uppercase tracking-wider text-slate-600">Uptime</div>
-              <div className="text-[22px] font-bold text-emerald-400 mono">{stats?.uptime ?? '99.94'}%</div>
+              <div className="text-[26px] font-bold text-emerald-400 mono">{stats?.uptime ?? '99.94'}%</div>
             </div>
             <div className="text-right">
               <div className="text-[11px] uppercase tracking-wider text-slate-600">MTTR</div>
-              <div className="text-[22px] font-bold text-cyan-300 mono">{stats?.mttr_minutes ?? 0}m</div>
+              <div className="text-[26px] font-bold text-cyan-300 mono">{stats?.mttr_minutes ?? 0}m</div>
             </div>
             <div className="text-right">
               <div className="text-[11px] uppercase tracking-wider text-slate-600">Agents</div>
-              <div className="text-[22px] font-bold text-violet-300 mono">
+              <div className="text-[26px] font-bold text-violet-300 mono">
                 {stats?.agents_active ?? 0}/{stats?.agents_total ?? 6}
               </div>
             </div>
@@ -93,7 +93,18 @@ export default function Overview({ stats }) {
         </div>
       </div>
 
-      {/* stat cards */}
+      {/* Switch status banner */}
+      <Alert kind="info" title="Switch bridge status">
+        <span className="mr-2"><SwitchChip mode={sw?.mode || 'simulated'} /></span>
+        {'Agent ↔ team chat routed through Switch. '}
+        {(sw?.mode || 'simulated') === 'simulated' ? (
+          <span className="text-cyan-300">Running in simulated mode — set <span className="mono">SWITCH_MODE=connected</span> for live delivery.</span>
+        ) : (
+          <span className="text-emerald-300">Live delivery active.</span>
+        )}
+      </Alert>
+
+      {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <StatCard label="Active" value={stats?.active_incidents ?? 0} sub="needs attention" accent="#f43f5e" icon="◉" />
         <StatCard label="Resolved" value={stats?.resolved_incidents ?? 0} sub="auto-closed by agents" accent="#10b981" icon="✓" />
@@ -103,17 +114,8 @@ export default function Overview({ stats }) {
       </div>
 
       <div className="grid xl:grid-cols-3 gap-5">
-        {/* live incidents */}
-        <Panel
-          className="xl:col-span-2"
-          title="Live Incidents"
-          subtitle="Auto-detected production anomalies"
-          action={
-            <Link to="/incidents" className="text-[12.5px] text-cyan-400 hover:text-cyan-300 font-medium">
-              View all →
-            </Link>
-          }
-        >
+        {/* Live incidents */}
+        <Panel className="xl:col-span-2" title="Live Incidents" subtitle="Auto-detected production anomalies">
           {!recent.length ? (
             <Empty title="No incidents yet" hint="Hit “Simulate Production Alert” to run the full workflow." />
           ) : (
@@ -159,16 +161,8 @@ export default function Overview({ stats }) {
           )}
         </Panel>
 
-        {/* agents */}
-        <Panel
-          title="AI Agents"
-          subtitle="Live agent status via Switch"
-          action={
-            <Link to="/agents" className="text-[12.5px] text-cyan-400 hover:text-cyan-300 font-medium">
-              Manage →
-            </Link>
-          }
-        >
+        {/* Agents */}
+        <Panel title="AI Agents" subtitle="Live agent status via Switch">
           <div className="space-y-2.5">
             {(agents || []).map((a) => {
               const st = AGENT_STATUS[a.status] || AGENT_STATUS.idle
@@ -204,17 +198,13 @@ export default function Overview({ stats }) {
       </div>
 
       <div className="grid xl:grid-cols-3 gap-5">
-        {/* switch */}
+        {/* Switch bridge */}
         <Panel title="Switch Bridge" subtitle="Agent ↔ team communication layer">
           <div className="space-y-3">
             <div className="flex items-center justify-between rounded-lg border border-[#1b2432] bg-[#0b1018] px-3 py-2.5">
               <span className="text-[12.5px] text-slate-400">Mode</span>
-              <span
-                className={`text-[11.5px] font-bold uppercase tracking-wide ${
-                  sw?.connected ? 'text-emerald-400' : 'text-cyan-300'
-                }`}
-              >
-                {sw?.mode || 'simulated'}
+              <span className="text-[11.5px] font-bold uppercase tracking-wide text-cyan-300">
+                <SwitchChip mode={sw?.mode || 'simulated'} />
               </span>
             </div>
             <div className="flex items-center justify-between rounded-lg border border-[#1b2432] bg-[#0b1018] px-3 py-2.5">
@@ -244,7 +234,7 @@ export default function Overview({ stats }) {
           </div>
         </Panel>
 
-        {/* recent feed */}
+        {/* Recent feed */}
         <Panel className="xl:col-span-2" title="Recent Incident Feed" subtitle="Newest first">
           <div className="space-y-2">
             {recent.map((inc) => (

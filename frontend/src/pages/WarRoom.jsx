@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { api } from '../api'
 import { usePoll, fmtClock } from '../hooks'
-import { Panel, Empty } from '../components/ui'
+import { Panel, Empty, Alert, Badge, SwitchChip } from '../components/ui'
 
 const ROLE_META = {
-  agent: { color: '#22d3ee', label: 'AI Agent' },
-  human: { color: '#a78bfa', label: 'Human' },
-  system: { color: '#f59e0b', label: 'System' },
+  agent: { color: '#22d3ee', label: 'AI Agent', avatar: '🤖' },
+  human: { color: '#a78bfa', label: 'Human', avatar: '🧑‍💼' },
+  system: { color: '#f59e0b', label: 'System', avatar: '⚙️' },
 }
 
 export default function WarRoom() {
@@ -49,12 +49,7 @@ export default function WarRoom() {
       </div>
 
       <div className="grid xl:grid-cols-3 gap-5">
-        <Panel
-          className="xl:col-span-2"
-          title="Incident Channel"
-          subtitle={`${(messages || []).length} messages · ${sw?.mode || 'simulated'} switch`}
-          padded={false}
-        >
+        <Panel className="xl:col-span-2" title="Incident Channel" subtitle={`${(messages || []).length} messages · Switch bridge`} padded={false}>
           <div className="h-[560px] overflow-y-auto p-5 space-y-4">
             {(messages || []).map((m) => {
               const meta = ROLE_META[m.role] || ROLE_META.system
@@ -65,15 +60,14 @@ export default function WarRoom() {
                     className="h-9 w-9 shrink-0 rounded-lg grid place-items-center text-[11px] font-bold"
                     style={{ background: `${meta.color}1f`, color: meta.color, border: `1px solid ${meta.color}44` }}
                   >
-                    {isHuman ? '🧑‍💼' : m.role === 'agent' ? '🤖' : '⚙️'}
+                    {meta.avatar}
                   </div>
                   <div className={`max-w-[76%] ${isHuman ? 'text-right' : ''}`}>
                     <div className="flex items-center gap-2 text-[11.5px] mb-1" style={{ justifyContent: isHuman ? 'flex-end' : 'flex-start' }}>
                       <span className="font-semibold text-slate-300">{m.author}</span>
-                      <span className="rounded px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-wider"
-                        style={{ color: meta.color, background: `${meta.color}18` }}>
+                      <Badge variant={m.role === 'agent' ? 'cyan' : m.role === 'human' ? 'violet' : 'amber'}>
                         {meta.label}
-                      </span>
+                      </Badge>
                       <span className="text-slate-600 mono">{fmtClock(m.created_at)}</span>
                     </div>
                     <div
@@ -135,7 +129,7 @@ export default function WarRoom() {
           <Panel title="Bridge Config" subtitle="Switch integration">
             <div className="space-y-2.5 text-[12.5px]">
               <div className="flex justify-between"><span className="text-slate-500">Server</span><span className="mono text-slate-300">{sw?.server}</span></div>
-              <div className="flex justify-between"><span className="text-slate-500">Mode</span><span className="text-cyan-300 capitalize font-semibold">{sw?.mode}</span></div>
+              <div className="flex justify-between"><span className="text-slate-500">Mode</span><span className="text-cyan-300 capitalize font-semibold"><SwitchChip mode={sw?.mode} /></span></div>
               <div className="flex justify-between"><span className="text-slate-500">Rooms</span><span className="mono text-slate-300">{sw?.rooms?.length ?? 0}</span></div>
               <div className="rounded-lg border border-cyan-400/25 bg-cyan-400/[0.07] p-3 text-[11.5px] text-cyan-200/90 leading-relaxed">
                 Set <span className="mono">SWITCH_MODE=connected</span> + <span className="mono">SWITCH_WEBHOOK_URL</span> on the
