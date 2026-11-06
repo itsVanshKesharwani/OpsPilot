@@ -56,21 +56,6 @@ body {
 .panel:hover {
   border-color: rgba(34, 211, 238, 0.18);
 }
-.panel.border-gradient {
-  position: relative;
-  border: none;
-  background: linear-gradient(180deg, rgba(17, 23, 34, 0.92), rgba(11, 15, 23, 0.95)),
-              linear-gradient(135deg, #22d3ee 0%, #a78bfa 100%);
-  border-radius: 16px;
-  padding: 1px;
-}
-.panel.border-gradient > * {
-  position: relative;
-  border-radius: 15px;
-  background: linear-gradient(180deg, rgba(17, 23, 34, 0.92), rgba(11, 15, 23, 0.95));
-  border: 1px solid #1b2432;
-}
-
 /* ---- Accent glows ---- */
 .glow-cyan {
   box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25), 0 0 35px -12px rgba(34, 211, 238, 0.45);

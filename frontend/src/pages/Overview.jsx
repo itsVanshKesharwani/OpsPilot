@@ -47,10 +47,9 @@ export default function Overview({ stats }) {
   return (
     <div className="space-y-5 rise">
       {/* Hero */}
-      <div className="panel p-6 relative overflow-hidden glow-cyan border-gradient">
-        <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-[100px]" />
-        <div className="absolute -left-20 -bottom-20 h-48 w-48 rounded-full bg-rose-500/10 blur-[80px]" />
-        <div className="relative z-10 flex flex-wrap items-end gap-6">
+      <div className="panel p-6 relative overflow-hidden glow-cyan">
+        <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-cyan-500/10 blur-[64px]" />
+        <div className="relative z-10 flex flex-wrap items-center gap-6">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cyan-400/80 font-semibold mb-2">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 live-dot" /> AI Incident Command Center
