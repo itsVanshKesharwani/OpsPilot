@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { usePoll, timeAgo } from '../hooks'
-import { Panel, Empty } from '../components/ui'
+import { Panel, Empty, Badge } from '../components/ui'
 
 const STATUS_META = {
   queued: { color: '#94a3b8', label: 'Queued' },
@@ -38,7 +38,7 @@ export default function Tasks() {
         <div>
           <h1 className="text-[22px] font-extrabold tracking-tight">Task Manager</h1>
           <p className="text-[13px] text-slate-500 mt-1">
-            Which task is assigned to which agent — drag-free, click to advance.
+            Which task is assigned to which agent — click to advance through the pipeline.
           </p>
         </div>
         <div className="ml-auto flex gap-4 text-right">

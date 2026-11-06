@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { api } from '../api'
 import { usePoll, fmtClock } from '../hooks'
-import { Panel, SevBadge, Empty, ApprovalCard, Alert } from '../components/ui'
+import { Panel, SevBadge, Empty, ApprovalCard, Alert, Badge } from '../components/ui'
 import Timeline from '../components/Timeline'
 import { STATUS } from '../constants'
 
@@ -26,6 +26,7 @@ export default function IncidentDetail() {
 
   const st = STATUS[inc.status] || STATUS.detected
   const approval = inc.approval
+  const isAwaiting = inc.status === 'awaiting_approval' && approval?.status === 'pending'
 
   async function decide(decision) {
     setBusy(decision)
@@ -35,8 +36,6 @@ export default function IncidentDetail() {
       setBusy('')
     }
   }
-
-  const isAwaiting = inc.status === 'awaiting_approval' && approval?.status === 'pending'
 
   return (
     <div className="space-y-5 rise">
@@ -148,7 +147,7 @@ export default function IncidentDetail() {
             )}
           </Panel>
 
-          {/* Approval gate standalone if not in header */}
+          {/* Approval gate standalone */}
           {!isAwaiting && approval && (
             <Panel title="Approval Gate" subtitle="Human-in-the-loop control">
               <ApprovalCard
