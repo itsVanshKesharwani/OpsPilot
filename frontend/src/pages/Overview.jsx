@@ -8,7 +8,6 @@ function StageStrip({ status }) {
   const order = ['detected', 'triaged', 'debugging', 'awaiting_approval', 'rolling_back', 'deploying', 'resolved']
   const idx = Math.max(0, order.indexOf(status))
   const labels = ['Detect', 'Triage', 'Debug', 'Approve', 'Resolve']
-  const visual = ['detected', 'triaged', 'debugging', 'awaiting_approval', 'resolved']
   const cur =
     status === 'rolling_back' || status === 'deploying' ? 3 : status === 'blocked' ? 3 : Math.min(idx, 4)
 

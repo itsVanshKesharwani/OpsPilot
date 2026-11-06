@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from '../api'
 
 export default function Topbar({ onSimulated, pending = 0 }) {
@@ -6,7 +6,7 @@ export default function Topbar({ onSimulated, pending = 0 }) {
   const [clock, setClock] = useState(new Date())
   const [toast, setToast] = useState('')
 
-  useState(() => {
+  useEffect(() => {
     const id = setInterval(() => setClock(new Date()), 1000)
     return () => clearInterval(id)
   }, [])
