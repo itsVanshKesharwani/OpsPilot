@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { api } from '../api'
 import { usePoll, fmtClock } from '../hooks'
-import { Panel, SevBadge, Empty } from '../components/ui'
+import { Panel, SevBadge, Empty, ApprovalCard, Alert } from '../components/ui'
 import Timeline from '../components/Timeline'
 import { STATUS } from '../constants'
 
@@ -22,7 +22,7 @@ export default function IncidentDetail() {
       </div>
     )
   }
-  if (!inc) return <div className="panel p-8 shimmer h-40" />
+  if (!inc) return <div className="panel p-8 shimmer h-96" />
 
   const st = STATUS[inc.status] || STATUS.detected
   const approval = inc.approval
@@ -36,6 +36,8 @@ export default function IncidentDetail() {
     }
   }
 
+  const isAwaiting = inc.status === 'awaiting_approval' && approval?.status === 'pending'
+
   return (
     <div className="space-y-5 rise">
       <button
@@ -45,20 +47,21 @@ export default function IncidentDetail() {
         ← All incidents
       </button>
 
-      <div className="panel p-5">
+      {/* Header */}
+      <div className="panel p-5 glow-cyan">
         <div className="flex flex-wrap items-start gap-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2.5 flex-wrap">
               <span className="mono text-[13px] text-slate-500">Incident #{inc.id}</span>
               <SevBadge severity={inc.severity} />
               <span
-                className="rounded px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wide border"
+                className={`rounded px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wide border ${isAwaiting ? 'pending-pulse' : ''}`}
                 style={{ color: st.color, borderColor: `${st.color}44`, background: `${st.color}14` }}
               >
                 {st.label}
               </span>
             </div>
-            <h1 className="mt-2 text-[24px] font-extrabold tracking-tight">{inc.title}</h1>
+            <h1 className="mt-2 text-[26px] font-extrabold tracking-tight">{inc.title}</h1>
             <div className="mt-1.5 flex flex-wrap gap-3 text-[12.5px] text-slate-500">
               <span className="mono">{inc.service}</span>
               <span>·</span>
@@ -74,22 +77,14 @@ export default function IncidentDetail() {
             </div>
           </div>
 
-          {inc.status === 'awaiting_approval' && approval?.status === 'pending' && (
-            <div className="ml-auto flex gap-2">
-              <button
-                onClick={() => decide('approve')}
-                disabled={!!busy}
-                className="rounded-lg bg-emerald-500 px-4 py-2.5 text-[13px] font-bold text-[#04120c] hover:bg-emerald-400 disabled:opacity-60"
-              >
-                {busy === 'approve' ? 'Approving…' : '✓ Approve action'}
-              </button>
-              <button
-                onClick={() => decide('reject')}
-                disabled={!!busy}
-                className="rounded-lg border border-rose-500/40 bg-rose-500/10 px-4 py-2.5 text-[13px] font-bold text-rose-200 hover:bg-rose-500/20 disabled:opacity-60"
-              >
-                {busy === 'reject' ? 'Rejecting…' : '✕ Reject'}
-              </button>
+          {isAwaiting && (
+            <div className="ml-auto flex flex-col gap-2">
+              <ApprovalCard
+                approval={approval}
+                onApprove={() => decide('approve')}
+                onReject={() => decide('reject')}
+                busy={busy}
+              />
             </div>
           )}
         </div>
@@ -100,81 +95,76 @@ export default function IncidentDetail() {
         </div>
       </div>
 
+      {/* Approval alert if already decided */}
+      {approval && approval.status !== 'pending' && (
+        <Alert
+          kind={approval.status === 'approved' ? 'ok' : 'error'}
+          title={
+            approval.status === 'approved'
+              ? 'Rollback approved & executed'
+              : 'Rollback rejected — manual intervention required'
+          }
+        >
+          {approval.status === 'approved'
+            ? 'Pilot has executed the rollback. Incident is resolving.'
+            : 'The staged fix was blocked. Human action needed.'}
+        </Alert>
+      )}
+
       <div className="grid xl:grid-cols-3 gap-5">
+        {/* Workflow timeline */}
         <Panel className="xl:col-span-2" title="Incident Workflow" subtitle="5-stage AI + human pipeline">
           <Timeline incident={inc} />
         </Panel>
 
+        {/* Right column */}
         <div className="space-y-5">
+          {/* Root cause */}
           <Panel title="Root Cause Analysis" subtitle="Sherlock · Debug Agent">
             {inc.root_cause ? (
-              <p className="text-[13px] leading-relaxed text-slate-300">{inc.root_cause}</p>
+              <div className="rounded-lg border border-[#1f2937] bg-[#070b11] p-4 mono text-[12.5px] text-emerald-300/90 leading-relaxed">
+                {inc.root_cause}
+              </div>
             ) : (
-              <div className="shimmer rounded-lg h-14" />
+              <div className="h-16 shimmer rounded-lg" />
             )}
           </Panel>
 
+          {/* Proposed fix */}
           <Panel title="Proposed Fix" subtitle="Forge · Fix Agent">
             {inc.proposed_fix ? (
               <>
-                <p className="text-[13px] leading-relaxed text-slate-300">{inc.proposed_fix}</p>
-                <div className="mt-3 rounded-lg border border-[#1f2937] bg-[#070b11] p-3 mono text-[11.5px] text-emerald-300/90">
+                <div className="rounded-lg border border-[#1f2937] bg-[#070b11] p-4 mono text-[12.5px] text-slate-300/90 leading-relaxed mb-3">
+                  {inc.proposed_fix}
+                </div>
+                <div className="rounded-lg border border-[#1f2937] bg-[#070b11] p-3 mono text-[11.5px] text-emerald-300/90">
                   $ opspilot {approval?.action || 'fix'} --service {inc.service}
                   <br />
                   <span className="text-slate-600"># execution blocked until human approval</span>
                 </div>
               </>
             ) : (
-              <div className="shimmer rounded-lg h-14" />
+              <div className="h-16 shimmer rounded-lg" />
             )}
           </Panel>
 
-          <Panel title="Approval Gate" subtitle="Human-in-the-loop control">
-            {!approval ? (
-              <div className="text-[12.5px] text-slate-600">No approval required yet.</div>
-            ) : (
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-[12.5px]">
-                  <span className="text-slate-500">Action</span>
-                  <span className="mono text-slate-200 uppercase font-semibold">{approval.action}</span>
-                </div>
-                <div className="flex items-center justify-between text-[12.5px]">
-                  <span className="text-slate-500">Risk</span>
-                  <span className="capitalize text-amber-300 font-semibold">{approval.risk}</span>
-                </div>
-                <div className="flex items-center justify-between text-[12.5px]">
-                  <span className="text-slate-500">Status</span>
-                  <span
-                    className={`font-bold uppercase text-[11.5px] ${
-                      approval.status === 'approved'
-                        ? 'text-emerald-400'
-                        : approval.status === 'rejected'
-                          ? 'text-rose-400'
-                          : 'text-amber-300'
-                    }`}
-                  >
-                    {approval.status}
-                  </span>
-                </div>
-                {approval.decided_by && (
-                  <div className="flex items-center justify-between text-[12.5px]">
-                    <span className="text-slate-500">Decided by</span>
-                    <span className="text-slate-200">{approval.decided_by}</span>
-                  </div>
-                )}
-                {approval.status === 'pending' && (
-                  <div className="pt-1 text-[11.5px] text-slate-600">
-                    Destructive actions never run without a human click.
-                  </div>
-                )}
-              </div>
-            )}
-          </Panel>
+          {/* Approval gate standalone if not in header */}
+          {!isAwaiting && approval && (
+            <Panel title="Approval Gate" subtitle="Human-in-the-loop control">
+              <ApprovalCard
+                approval={approval}
+                onApprove={() => decide('approve')}
+                onReject={() => decide('reject')}
+                busy={busy}
+              />
+            </Panel>
+          )}
         </div>
       </div>
 
+      {/* Console output */}
       <Panel title="Console Output" subtitle={`Live log stream · ${inc.service}`} padded={false}>
-        <div className="mono text-[12px] leading-6 p-4 bg-[#070b11] rounded-b-[14px] max-h-[300px] overflow-y-auto">
+        <div className="mono text-[12px] leading-6 p-4 bg-[#070b11] rounded-b-[14px] max-h-[340px] overflow-y-auto">
           {(inc.events || []).map((e) => (
             <div key={e.id} className="flex gap-3">
               <span className="text-slate-700 shrink-0">

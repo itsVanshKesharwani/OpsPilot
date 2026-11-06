@@ -4,7 +4,7 @@ import { api } from '../api'
 export default function Topbar({ onSimulated, pending = 0 }) {
   const [busy, setBusy] = useState(false)
   const [clock, setClock] = useState(new Date())
-  const [toast, setToast] = useState('')
+  const [toast, setToast] = useState(null)
 
   useEffect(() => {
     const id = setInterval(() => setClock(new Date()), 1000)
@@ -15,12 +15,12 @@ export default function Topbar({ onSimulated, pending = 0 }) {
     setBusy(true)
     try {
       const inc = await api.simulate()
-      setToast(`Incident #${inc.id} injected — detection started`)
+      setToast({ message: `Incident #${inc.id} injected — detection started`, kind: 'ok' })
       onSimulated?.(inc)
-      setTimeout(() => setToast(''), 4200)
+      setTimeout(() => setToast(null), 4500)
     } catch (e) {
-      setToast('Could not reach backend: ' + e.message)
-      setTimeout(() => setToast(''), 4200)
+      setToast({ message: 'Backend unreachable: ' + e.message, kind: 'error' })
+      setTimeout(() => setToast(null), 4500)
     } finally {
       setBusy(false)
     }
@@ -40,7 +40,7 @@ export default function Topbar({ onSimulated, pending = 0 }) {
 
         <div className="ml-auto flex items-center gap-3">
           {pending > 0 && (
-            <div className="hidden md:flex items-center gap-2 rounded-lg border border-amber-400/25 bg-amber-400/10 px-3 py-1.5 text-[12.5px] text-amber-200">
+            <div className="hidden md:flex items-center gap-2 rounded-lg border border-amber-400/25 bg-amber-400/10 px-3 py-1.5 text-[12.5px] text-amber-200 pending-pulse">
               ⏳ {pending} approval{pending > 1 ? 's' : ''} pending
             </div>
           )}
@@ -56,10 +56,22 @@ export default function Topbar({ onSimulated, pending = 0 }) {
           </div>
         </div>
       </div>
+
       {toast && (
         <div className="px-6 pb-3 rise">
-          <div className="rounded-lg border border-cyan-400/25 bg-cyan-400/10 px-3 py-2 text-[12.5px] text-cyan-100">
-            {toast}
+          <div
+            className={`rounded-lg border p-3 px-4 ${
+              toast.kind === 'ok'
+                ? 'border-emerald-500/25 bg-emerald-500/10 text-emerald-200'
+                : 'border-rose-500/25 bg-rose-500/10 text-rose-200'
+            }`}
+          >
+            <div className="flex items-center gap-2 text-[12.5px]">
+              <span className={toast.kind === 'ok' ? 'text-emerald-400' : 'text-rose-400'}>
+                {toast.kind === 'ok' ? '✓' : '✕'}
+              </span>
+              <span>{toast.message}</span>
+            </div>
           </div>
         </div>
       )}

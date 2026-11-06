@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { usePoll, fmtClock } from '../hooks'
-import { Panel, Empty } from '../components/ui'
+import { Panel, Empty, Alert, Badge, ApprovalCard } from '../components/ui'
 
 const RISK = {
   high: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
@@ -43,11 +43,7 @@ export default function Approvals() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`rounded-lg px-3.5 py-2 text-[12.5px] font-medium border capitalize ${
-                tab === t
-                  ? 'border-cyan-400/35 bg-cyan-400/10 text-cyan-200'
-                  : 'border-[#1b2432] bg-[#0b1018] text-slate-400 hover:text-slate-200'
-              }`}
+              className={`rounded-lg px-3.5 py-2 text-[12.5px] font-medium border capitalize ${tab === t ? 'border-cyan-400/35 bg-cyan-400/10 text-cyan-200' : 'border-[#1b2432] bg-[#0b1018] text-slate-400 hover:text-slate-200'}`}
             >
               {t}{' '}
               <span className="mono text-[11px] opacity-70">
@@ -59,17 +55,9 @@ export default function Approvals() {
       </div>
 
       {pending.length > 0 && (
-        <div className="rounded-xl border border-amber-400/25 bg-amber-400/[0.07] p-4 flex items-center gap-3">
-          <span className="text-2xl">⏳</span>
-          <div>
-            <div className="text-[14px] font-semibold text-amber-100">
-              {pending.length} critical action{pending.length > 1 ? 's' : ''} waiting for you
-            </div>
-            <div className="text-[12.5px] text-amber-200/70">
-              The AI has staged the fix. Execution starts the moment you approve.
-            </div>
-          </div>
-        </div>
+        <Alert kind="warn" title={`${pending.length} critical action${pending.length > 1 ? 's' : ''} waiting for you`}>
+          The AI has staged the fix. Execution starts the moment you approve.
+        </Alert>
       )}
 
       <div className="space-y-4">
@@ -83,9 +71,7 @@ export default function Approvals() {
                   >
                     {a.risk} risk
                   </span>
-                  <span className="rounded border border-[#1f2937] bg-[#0a0f16] px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wide text-cyan-300">
-                    {a.action}
-                  </span>
+                  <Badge variant="cyan">{a.action}</Badge>
                   <Link
                     to={`/incidents/${a.incident_id}`}
                     className="mono text-[11.5px] text-slate-500 hover:text-cyan-300"
@@ -114,7 +100,7 @@ export default function Approvals() {
                     <button
                       onClick={() => decide(a.id, 'approve')}
                       disabled={busy !== null}
-                      className="w-full rounded-lg bg-emerald-500 py-2.5 text-[13.5px] font-bold text-[#04120c] hover:bg-emerald-400 disabled:opacity-60 transition"
+                      className="w-full rounded-lg bg-emerald-500 py-2.5 text-[13.5px] font-bold text-[#04120c] hover:bg-emerald-400 disabled:opacity-60 transition shadow-[0_0_20px_-6px_rgba(16,185,129,.7)]"
                     >
                       {busy === `${a.id}-approve` ? 'Executing…' : '✓ Approve & Execute'}
                     </button>
@@ -132,9 +118,7 @@ export default function Approvals() {
                 ) : (
                   <div className="rounded-lg border border-[#1b2432] bg-[#0a0f16] p-3.5 text-center">
                     <div
-                      className={`text-[15px] font-bold uppercase ${
-                        a.status === 'approved' ? 'text-emerald-400' : 'text-rose-400'
-                      }`}
+                      className={`text-[15px] font-bold uppercase ${a.status === 'approved' ? 'text-emerald-400' : 'text-rose-400'}`}
                     >
                       {a.status}
                     </div>
