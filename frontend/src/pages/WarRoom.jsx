@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { api } from '../api'
 import { usePoll, fmtClock } from '../hooks'
-import { Panel, Empty, Alert, Badge, SwitchChip } from '../components/ui'
+import { Panel, Empty, Alert, Badge, SwitchChip, Input, Button } from '../components/ui'
 
 const ROLE_META = {
   agent: { color: '#22d3ee', label: 'AI Agent', avatar: '🤖' },
@@ -88,19 +88,14 @@ export default function WarRoom() {
           </div>
 
           <form onSubmit={send} className="border-t border-[#161d2a] p-3 flex gap-2.5">
-            <input
+            <Input
+              placeholder="Message the team and agents… (e.g. Atlas, give me the blast radius)"
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              placeholder="Message the team and agents… (e.g. Atlas, give me the blast radius)"
-              className="flex-1 rounded-lg border border-[#1b2432] bg-[#0a0f16] px-3.5 py-2.5 text-[13px] text-slate-200 placeholder:text-slate-600 outline-none focus:border-cyan-400/40"
             />
-            <button
-              type="submit"
-              disabled={sending || !draft.trim()}
-              className="rounded-lg bg-cyan-500 px-4 py-2.5 text-[13px] font-bold text-[#04121b] hover:bg-cyan-400 disabled:opacity-50"
-            >
-              Send
-            </button>
+            <Button variant="success" type="submit" disabled={sending || !draft.trim()}>
+              {sending ? 'Sending…' : 'Send'}
+            </Button>
           </form>
         </Panel>
 

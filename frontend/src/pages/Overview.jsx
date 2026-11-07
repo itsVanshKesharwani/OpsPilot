@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api'
 import { usePoll, timeAgo, fmtClock } from '../hooks'
-import { Panel, StatCard, SevBadge, Empty, SwitchChip, Alert } from '../components/ui'
+import { Panel, StatCard, SevBadge, Empty, SwitchChip, Alert, Avatar, Badge } from '../components/ui'
 import { STATUS, AGENT_STATUS, SEVERITY } from '../constants'
 
 function StageStrip({ status }) {
@@ -42,56 +42,59 @@ export default function Overview({ stats }) {
 
   const active = (incidents || []).filter((i) => !['resolved', 'closed'].includes(i.status))
   const recent = (incidents || []).slice(0, 5)
+  const critical = (incidents || []).filter((i) => i.severity === 'critical' && !['resolved', 'closed'].includes(i.status))
 
   return (
     <div className="space-y-5 rise">
       {/* Hero */}
       <div className="panel p-6 relative overflow-hidden glow-cyan">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-cyan-500/10 blur-[100px]" />
-        <div className="relative z-10 flex flex-wrap items-end gap-6">
-          <div>
-            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cyan-400/80 font-semibold">
+        <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-cyan-500/10 blur-[64px]" />
+        <div className="relative z-10 flex flex-wrap items-center gap-6">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cyan-400/80 font-semibold mb-2">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 live-dot" /> AI Incident Command Center
             </div>
-            <h1 className="mt-2 text-[28px] font-extrabold tracking-tight">
+            <h1 className="mt-0 mb-3 text-[30px] font-extrabold tracking-tight leading-tight">
               {active.length > 0 ? (
                 <>
-                  <span className="text-rose-400">{active.length} active incident{active.length > 1 ? 's' : ''}</span>
-                  <span className="text-slate-600"> · </span>
-                  <span className="text-slate-300">all systems under AI watch</span>
+                  <span className="text-rose-400">{active.length}</span>{' '}
+                  active incident{active.length > 1 ? 's' : ''}
                 </>
               ) : (
-                <>
-                  <span className="text-emerald-400">All systems operational</span>
-                  <span className="text-slate-600"> · </span>
-                  <span className="text-slate-400 font-medium">0 active incidents</span>
-                </>
+                <span className="text-emerald-400">All systems operational</span>
               )}
             </h1>
-            <p className="mt-1.5 text-[13px] text-slate-500">
+            <p className="text-[13px] text-slate-500 max-w-xl">
               Monitoring, triaging and resolving production issues with autonomous AI agents — every
               critical action gated by human approval via Switch.
             </p>
           </div>
 
           <div className="ml-auto flex gap-6">
-            <div className="text-right">
-              <div className="text-[11px] uppercase tracking-wider text-slate-600">Uptime</div>
-              <div className="text-[26px] font-bold text-emerald-400 mono">{stats?.uptime ?? '99.94'}%</div>
-            </div>
-            <div className="text-right">
-              <div className="text-[11px] uppercase tracking-wider text-slate-600">MTTR</div>
-              <div className="text-[26px] font-bold text-cyan-300 mono">{stats?.mttr_minutes ?? 0}m</div>
-            </div>
-            <div className="text-right">
-              <div className="text-[11px] uppercase tracking-wider text-slate-600">Agents</div>
-              <div className="text-[26px] font-bold text-violet-300 mono">
-                {stats?.agents_active ?? 0}/{stats?.agents_total ?? 6}
-              </div>
-            </div>
+            <StatCard label="Uptime" value={stats?.uptime ?? '99.94'} sub="last 30 days" accent="#10b981" icon="◍" />
+            <StatCard label="MTTR" value={`${stats?.mttr_minutes ?? 0}m`} sub="mean time to resolve" accent="#22d3ee" icon="⏱" />
+            <StatCard label="Agents" value={`${stats?.agents_active ?? 0}/${stats?.agents_total ?? 6}`} sub="active / total" accent="#8b5cf6" icon="⬢" />
           </div>
         </div>
       </div>
+
+      {/* Critical alert banner */}
+      {critical.length > 0 && (
+        <Alert kind="error" title={`${critical.length} critical incident${critical.length > 1 ? 's' : ''} needs immediate attention`}>
+          {critical.slice(0, 3).map((inc) => (
+            <div key={inc.id} className="mt-1 flex items-center gap-2 text-[12px] text-rose-200">
+              <span className="text-xs">#{inc.id}</span>
+              <span className="text-slate-400">·</span>
+              <span>{inc.title}</span>
+            </div>
+          ))}
+          <div className="mt-2 flex gap-2">
+            <Link to="/incidents?status=active" className="text-cyan-400 text-[12px] font-semibold hover:underline">
+              View all active →
+            </Link>
+          </div>
+        </Alert>
+      )}
 
       {/* Switch status banner */}
       <Alert kind="info" title="Switch bridge status">
@@ -167,13 +170,8 @@ export default function Overview({ stats }) {
             {(agents || []).map((a) => {
               const st = AGENT_STATUS[a.status] || AGENT_STATUS.idle
               return (
-                <div key={a.id} className="flex items-center gap-3 rounded-lg border border-[#1b2432] bg-[#0b1018] px-3 py-2.5">
-                  <div
-                    className="h-8 w-8 rounded-md grid place-items-center text-[10.5px] font-bold"
-                    style={{ background: `${a.color}1f`, color: a.color, border: `1px solid ${a.color}44` }}
-                  >
-                    {a.icon}
-                  </div>
+                <div key={a.id} className="flex items-center gap-3 rounded-lg border border-[#1b2432] bg-[#0b1018] px-3 py-2.5 group hover:border-cyan-400/30 transition">
+                  <Avatar label={a.name[0]} color={a.color} />
                   <div className="min-w-0">
                     <div className="text-[13px] font-semibold text-slate-200">{a.name}</div>
                     <div className="text-[11px] text-slate-500 truncate">{a.role}</div>

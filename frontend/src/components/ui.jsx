@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
+/* ============ Panel ============ */
 export function Panel({ title, subtitle, action, children, className = '', padded = true }) {
   return (
     <section className={`panel ${className}`}>
       {(title || action) && (
         <header className="flex items-start gap-3 px-5 py-4 border-b border-[#161d2a]">
           <div>
-            <h2 className="text-[13px] font-semibold tracking-tight text-slate-100">{title}</h2>
+            {title && <h2 className="text-[13px] font-semibold tracking-tight text-slate-100">{title}</h2>}
             {subtitle && <p className="text-[11px] text-slate-500 mt-0.5">{subtitle}</p>}
           </div>
           <div className="ml-auto">{action}</div>
@@ -17,6 +18,7 @@ export function Panel({ title, subtitle, action, children, className = '', padde
   )
 }
 
+/* ============ Stat Card ============ */
 export function StatCard({ label, value, sub, accent = '#22d3ee', icon, trend }) {
   return (
     <div className="panel p-4 relative overflow-hidden group">
@@ -49,6 +51,7 @@ export function StatCard({ label, value, sub, accent = '#22d3ee', icon, trend })
   )
 }
 
+/* ============ SevBadge ============ */
 export function SevBadge({ severity }) {
   const map = {
     critical: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
@@ -65,6 +68,7 @@ export function SevBadge({ severity }) {
   )
 }
 
+/* ============ StatusDot ============ */
 export function StatusDot({ status, color }) {
   return (
     <span className="inline-flex items-center gap-1.5 text-[12px] text-slate-400">
@@ -77,6 +81,7 @@ export function StatusDot({ status, color }) {
   )
 }
 
+/* ============ Empty ============ */
 export function Empty({ icon = '◇', title, hint }) {
   return (
     <div className="py-12 text-center">
@@ -87,7 +92,7 @@ export function Empty({ icon = '◇', title, hint }) {
   )
 }
 
-/* ---- Switch chip (mode indicator) ---- */
+/* ============ SwitchChip ============ */
 export function SwitchChip({ mode = 'simulated' }) {
   const isLive = mode === 'connected' || mode === 'live'
   return (
@@ -100,7 +105,7 @@ export function SwitchChip({ mode = 'simulated' }) {
   )
 }
 
-/* ---- Alert toast / callout ---- */
+/* ============ Alert ============ */
 export function Alert({ kind = 'info', title, children }) {
   const meta = {
     info: { bg: 'bg-cyan-500/[0.08]', border: 'border-cyan-500/25', text: 'text-cyan-200', icon: 'ℹ️' },
@@ -124,10 +129,9 @@ export function Alert({ kind = 'info', title, children }) {
   )
 }
 
-/* ---- Badge ---- */
+/* ============ Badge ============ */
 export function Badge({ children, variant = 'default' }) {
-  const base =
-    'inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wider'
+  const base = 'inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wider'
   const variants = {
     default: 'border-[#1f2937] bg-[#0b1018] text-slate-400',
     cyan: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-300',
@@ -139,7 +143,7 @@ export function Badge({ children, variant = 'default' }) {
   return <span className={`${base} ${variants[variant]}`}>{children}</span>
 }
 
-/* ---- Stage progress (5-stage workflow mini) ---- */
+/* ============ StageProgress ============ */
 export function StageProgress({ status }) {
   const stages = [
     { key: 'detection', label: 'Detect' },
@@ -159,9 +163,7 @@ export function StageProgress({ status }) {
       {stages.map((s, i) => (
         <div key={s.key} className="flex items-center gap-1.5">
           <div
-            className={`h-1.5 rounded-full transition-all ${
-              done || i < cur ? 'live-dot' : ''
-            }`}
+            className={`h-1.5 rounded-full transition-all ${done || i < cur ? 'live-dot' : ''}`}
             style={{
               width: i === cur ? 34 : 20,
               background: done || i < cur ? (i === cur ? '#22d3ee' : '#10b981') : '#1f2937',
@@ -180,7 +182,7 @@ export function StageProgress({ status }) {
   )
 }
 
-/* ---- Approval decision card ---- */
+/* ============ ApprovalCard ============ */
 export function ApprovalCard({ approval, onApprove, onReject, busy }) {
   const RISK = {
     high: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
@@ -189,8 +191,7 @@ export function ApprovalCard({ approval, onApprove, onReject, busy }) {
   }
 
   return (
-    <div className="panel p-6 relative overflow-hidden">
-      {/* Left accent */}
+    <div className="panel p-6 relative overflow-hidden glow-rose">
       <div className="absolute inset-y-0 left-0 w-1" style={{ background: '#f59e0b' }} />
 
       <div className="flex flex-wrap items-start gap-4">
@@ -263,17 +264,14 @@ export function ApprovalCard({ approval, onApprove, onReject, busy }) {
   )
 }
 
-/* ---- Loading skeleton ---- */
+/* ============ Skeleton ============ */
 export function Skeleton({ className = '', height = '1rem', width = '100%' }) {
   return (
-    <div
-      className={`skeleton ${className}`}
-      style={{ height, width }}
-    />
+    <div className={`skeleton ${className}`} style={{ height, width }} />
   )
 }
 
-/* ---- Timeline row ---- */
+/* ============ TimelineRow ============ */
 export function TimelineRow({ event, state }) {
   const color =
     state === 'done' ? '#10b981' : state === 'active' ? '#22d3ee' : '#334155'
@@ -325,7 +323,7 @@ export function TimelineRow({ event, state }) {
   )
 }
 
-/* ---- Toast manager ---- */
+/* ============ Toast Provider ============ */
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([])
 
@@ -342,15 +340,61 @@ export function ToastProvider({ children }) {
       {children}
       <div className="fixed top-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
         {toasts.map((t) => (
-          <div
-            key={t.id}
-            className="pointer-events-auto min-w-[300px] rise"
-            style={{ animationDuration: '0.25s' }}
-          >
+          <div key={t.id} className="pointer-events-auto min-w-[300px] rise">
             <Alert kind={t.kind} title={t.message} />
           </div>
         ))}
       </div>
     </>
+  )
+}
+
+/* ============ Avatar ============ */
+export function Avatar({ label, color = '#22d3ee', size = 8 }) {
+  return (
+    <div
+      className="shrink-0 rounded-lg grid place-items-center text-[11px] font-bold"
+      style={{
+        height: `${size}rem`,
+        width: `${size}rem`,
+        background: `${color}1f`,
+        color,
+        border: `1px solid ${color}44`,
+      }}
+    >
+      {label}
+    </div>
+  )
+}
+
+/* ============ Button ============ */
+export function Button({ children, onClick, variant = 'primary', disabled, loading, className = '' }) {
+  const variants = {
+    primary: 'bg-gradient-to-r from-cyan-500 to-blue-600 text-[#03131c] font-bold shadow-[0_0_20px_-6px_rgba(34,211,238,.7)] hover:brightness-110',
+    ghost: 'border-[#1f2937] bg-[#0b1018] text-slate-400 hover:text-white hover:border-cyan-400/40',
+    danger: 'border-rose-500/40 bg-rose-500/10 text-rose-200 hover:bg-rose-500/20',
+    success: 'bg-emerald-500 text-[#04120c] font-bold hover:bg-emerald-400 shadow-[0_0_20px_-6px_rgba(16,185,129,.7)]',
+  }
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled || loading}
+      className={`rounded-lg px-4 py-2.5 text-[13px] transition-all disabled:opacity-60 active:scale-[.98] ${variants[variant]} ${className}`}
+    >
+      {loading && <span className="mr-2">⟳</span>}
+      {children}
+    </button>
+  )
+}
+
+/* ============ Input ============ */
+export function Input({ placeholder, value, onChange, className = '' }) {
+  return (
+    <input
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={`rounded-lg border border-[#1b2432] bg-[#0a0f16] px-3.5 py-2.5 text-[13px] text-slate-200 placeholder:text-slate-600 outline-none focus:border-cyan-400/40 transition ${className}`}
+    />
   )
 }

@@ -15,7 +15,7 @@ import {
 } from 'recharts'
 import { api } from '../api'
 import { usePoll } from '../hooks'
-import { Panel, StatCard, Empty } from '../components/ui'
+import { Panel, StatCard, Empty, Badge } from '../components/ui'
 
 const SEV_COLORS = { critical: '#f43f5e', high: '#f59e0b', medium: '#38bdf8', low: '#22d3ee' }
 const STATUS_COLORS = {
@@ -175,9 +175,9 @@ export default function Analytics() {
                   </td>
                 </tr>
               ))}
+              {!a.services.length && <Empty title="No data yet" />}
             </tbody>
           </table>
-          {!a.services.length && <Empty title="No data yet" />}
         </Panel>
 
         <Panel title="Incident Summary" subtitle="Key numbers for the postmortem">

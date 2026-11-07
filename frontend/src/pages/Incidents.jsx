@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api'
 import { usePoll, timeAgo, fmtClock } from '../hooks'
-import { Panel, SevBadge, Empty } from '../components/ui'
+import { Panel, SevBadge, Empty, Badge } from '../components/ui'
 import { STATUS, SEV_ORDER } from '../constants'
 
 const FILTERS = [
@@ -36,11 +36,7 @@ export default function Incidents() {
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`rounded-lg px-3.5 py-2 text-[12.5px] font-medium border transition ${
-                filter === f.key
-                  ? 'border-cyan-400/35 bg-cyan-400/10 text-cyan-200'
-                  : 'border-[#1b2432] bg-[#0b1018] text-slate-400 hover:text-slate-200'
-              }`}
+              className={`rounded-lg px-3.5 py-2 text-[12.5px] font-medium border transition ${filter === f.key ? 'border-cyan-400/35 bg-cyan-400/10 text-cyan-200' : 'border-[#1b2432] bg-[#0b1018] text-slate-400 hover:text-slate-200'}`}
             >
               {f.label}
             </button>
@@ -75,11 +71,11 @@ export default function Incidents() {
                   <tr
                     key={inc.id}
                     onClick={() => navigate(`/incidents/${inc.id}`)}
-                    className="border-b border-[#131a26] cursor-pointer hover:bg-cyan-400/[0.04] transition"
+                    className="border-b border-[#131a26] cursor-pointer hover:bg-cyan-400/[0.04] transition group"
                   >
                     <td className="px-5 py-3.5 mono text-[12.5px] text-slate-500">#{inc.id}</td>
                     <td className="px-5 py-3.5">
-                      <div className="text-[13.5px] font-semibold text-slate-100">{inc.title}</div>
+                      <div className="text-[13.5px] font-semibold text-slate-100 group-hover:text-cyan-200">{inc.title}</div>
                       <div className="text-[11.5px] text-slate-600 truncate max-w-[340px]">
                         {inc.root_cause || inc.description}
                       </div>

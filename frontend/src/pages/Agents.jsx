@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { usePoll, timeAgo } from '../hooks'
-import { Panel, Empty } from '../components/ui'
+import { Panel, Empty, Badge, Avatar } from '../components/ui'
 import { AGENT_STATUS } from '../constants'
 
 const CAPABILITIES = {
@@ -43,15 +43,10 @@ export default function Agents() {
         {(agents || []).map((a) => {
           const st = AGENT_STATUS[a.status] || AGENT_STATUS.idle
           return (
-            <div key={a.id} className="panel p-4 relative overflow-hidden">
+            <div key={a.id} className="panel p-4 relative overflow-hidden group">
               <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${a.color}, transparent)` }} />
               <div className="flex items-start gap-3">
-                <div
-                  className="h-11 w-11 rounded-lg grid place-items-center text-[12px] font-extrabold shrink-0"
-                  style={{ background: `${a.color}1f`, color: a.color, border: `1px solid ${a.color}44` }}
-                >
-                  {a.icon}
-                </div>
+                <Avatar label={a.name[0]} color={a.color} size={8} />
                 <div className="min-w-0">
                   <div className="text-[15px] font-bold text-slate-100">{a.name}</div>
                   <div className="text-[12px] text-slate-500">{a.role}</div>

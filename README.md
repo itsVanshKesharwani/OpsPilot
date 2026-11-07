@@ -3,74 +3,55 @@
 > **Jab production down ho, jawab kitni der mein milega?**  
 > OpsPilot ek AI-powered incident management system hai jo problem ko **detect → triage → debug → approve → resolve** tak le jaata hai — aur har destructive action se pehle **insaan ki approval** leta hai.
 
-Built for **WeMakeDevs × DevTools Academy × Switch+** hackathon · Submission deadline: **7 Nov 2026, 11:59 PM IST**
+Built for **Flip the Switch Hackathon — WeMakeDevs × DevTools Academy × Switch+**  
+**Submission deadline:** 7 Nov 2026, 11:59 PM IST · **Track:** 01 — Best Business Workflow  
+**Prize pool:** $10,000 · **Team:** ShiftSpark (`codeTDMNJT`) · 4/4 members
 
 ---
 
+[![Track: Best Business Workflow](https://img.shields.io/badge/Track-01%20Best%20Business%20Workflow-blue?style=for-the-badge)](https://wemakedevs.org/)
 [![Frontend: React 18](https://img.shields.io/badge/Frontend-React%2018-blue?style=for-the-badge&logo=react)](https://react.dev/)
 [![Backend: FastAPI](https://img.shields.io/badge/Backend-FastAPI-green?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Database: SQLite](https://img.shields.io/badge/DB-SQLite-lightgrey?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/)
 [![Integration: Switch+](https://img.shields.io/badge/Integration-Switch+-purple?style=for-the-badge)](https://switch.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
-[![Hackathon](https://img.shields.io/badge/Event-WeMakeDevs%20Hackathon-orange?style=for-the-badge)](https://wemakedevs.org/)
 
 ---
 
-## 📌 Elevator Pitch
+## 📸 Project Screenshots
 
-Production incident aaya? Pata chalne mein 10 minute, root cause dhoondhne mein 30 minute, aur rollback karwane ke liye manager ki approval mein aur 15 minute. **Total downtime: ~1 hour.**
+> Add your actual screenshots to `docs/screenshots/` folder:
 
-OpsPilot ye sab **5 minute mein** kar deta hai — AI agents detect karte hain, triage karte hain, root cause nikaalte hain, aur human approval ke baad auto-resolve karte hain. Sab kuch ek dashboard par, real-time.
+| File | Description |
+|------|-------------|
+| `docs/screenshots/dashboard.png` | Overview dashboard with live incidents and AI agent status |
+| `docs/screenshots/incidents.png` | Live incidents list with severity and status filters |
+| `docs/screenshots/incident-detail.png` | Single incident detail with 5-stage workflow timeline |
+| `docs/screenshots/agents.png` | AI Agents page showing Sentinel, Atlas, Sherlock, Forge, Pilot, Chronicle |
+| `docs/screenshots/war-room.png` | War Room chat interface routed through Switch bridge |
+| `docs/screenshots/approvals.png` | Approval Center with human approve/reject buttons |
+| `docs/screenshots/analytics.png` | Analytics with MTTR charts, severity split, agent productivity |
+| `docs/screenshots/demo-flow.png` | End-to-end demo flow visualization |
 
----
-
-## 🎯 Problem Statement
-
-| Problem | Asli Dard | OpsPilot Solution |
-|---------|-----------|-------------------|
-| 🔴 Alert flood | Kai alerts ek saath, kya critical hai pata nahi chalta | **Atlas** severity + blast radius triage karta hai |
-| 🔴 Root cause khojne mein der | Logs manually dhoondhne padte hain | **Sherlock** logs analyze karke root cause nikaalta hai |
-| 🔴 Destructive action bina approval | Rollback / deploy ke liye manager ka wait | **Human Approval Gate** — bina approve ke kuch nahi chalta |
-| 🔴 Team coordination fail | Chat scattered hai, koi update nahi | **Switch-powered War Room** — sab events aur messages ek jagah |
-| 🔴 MTTR pata nahi chalta | Kaunsa kitna time le raha hai? | **Analytics** — MTTR, severity split, agent productivity |
-
----
-
-## ✨ Key Features
-
-| # | Feature | Kya Karta Hai | Status |
-|---|---------|---------------|--------|
-| 1 | 🔍 **Sentinel** | Monitoring se alerts detect karta hai (HTTP 500 flood etc.) | ✅ |
-| 2 | 🎯 **Atlas** | Severity + blast radius identify karta hai | ✅ |
-| 3 | 🕵️ **Sherlock** | Logs se root cause nikaalta hai, repro banata hai | ✅ |
-| 4 | 🛠️ **Forge** | Fix / rollback plan propose karta hai | ✅ |
-| 5 | 🚀 **Pilot** | Insaan ki approve ke baad action execute karta hai | ✅ |
-| 6 | 📋 **Chronicle** | Postmortem + MTTR report generate karta hai | ✅ |
-| 7 | 👤 **Human Approval Gate** | Approve / Reject, double-decision blocked | ✅ |
-| 8 | 💬 **War Room** | Switch ke through live agent + team chat | ✅ |
-| 9 | 📊 **Analytics** | MTTR, trends, agent productivity charts | ✅ |
-| 10 | ⚡ **Simulate Alert** | One-click production alert simulation | ✅ |
+**Demo video:** Add Loom/YouTube link here → _(Link daalo)_
 
 ---
 
-## 📽️ 30-Second Demo (Judges Ko Yahi Dikhao)
+## 🎯 Project Overview (Flip the Switch Hackathon)
 
-```text
-1. Dashboard kholo → Live Incidents, AI Agents, Switch Bridge sab live
-2. Top-right "⚡ Simulate Production Alert" click karo
-3. Auto flow chalta hai:
-   ├── Step 1 — Detection: Sentinel alert detect karta hai (HTTP 500 flood)
-   ├── Step 2 — AI Triage: Atlas severity + blast radius identify karta hai
-   ├── Step 3 — Debugging: Sherlock repro banata hai, root cause nikaalta hai
-   ├── Step 4 — Approval: Fix staged, insaan ke approve ka wait
-   └── Step 5 — Resolution: Approve & Execute → Pilot rollback → Incident Resolved
-4. Approval Center → "Approve & Execute" → rollback chalu → resolved
-5. War Room → AI agents aur team ki live chat (Switch routed)
-6. Analytics → MTTR, severity split, agent productivity charts
+### The Challenge
+
+Take an AI agent you already use (**Claude Code, Codex, Cursor, OpenCode, Antigravity**), connect it to **Slack, Teams, Discord or Telegram** with **Switch**, and build a workflow where it gets real work done with your teammates.
+
+### What OpsPilot Builds
+
+OpsPilot is an **AI Incident Command Center** where AI agents and humans collaborate in a **Switch-powered War Room** to manage the complete production incident lifecycle:
+
+```
+Alert → Sentinel → Atlas → Sherlock → Forge → Human Approval → Pilot → Chronicle
 ```
 
-> 🎥 **Demo Video:** _(Loom / YouTube link yahan daalo)_  
-> 🖼️ **Screenshots:** `docs/screenshots/` mein daalo
+Every stage travels through Switch — agents act as teammates in chat rooms, humans approve destructive actions, and the full audit trail lives in the shared Switch log.
 
 ---
 
@@ -78,111 +59,206 @@ OpsPilot ye sab **5 minute mein** kar deta hai — AI agents detect karte hain, 
 
 ```mermaid
 flowchart TD
-    subgraph UI ["OpsPilot Dashboard (React + Tailwind)"]
+    subgraph Chat ["Team Chat (Slack / Teams / Discord / Telegram via Switch)"]
         direction TB
-        U1[Overview]:::page
-        U2[Live Incidents]:::page
-        U3[AI Agents]:::page
-        U4[War Room]:::page
-        U5[Task Manager]:::page
-        U6[Approval Center]:::page
-        U7[Analytics]:::page
+        C1[🧑‍💼 Human – Team Lead]:::human
+        C2[🤖 Sentinel – Monitor]:::agent
+        C3[🤖 Atlas – Triage]:::agent
+        C4[🤖 Sherlock – Debug]:::agent
+        C5[🤖 Forge – Fix]:::agent
+        C6[🤖 Pilot – Release]:::agent
+        C7[🤖 Chronicle – Report]:::agent
     end
 
-    UI -- REST + polling (/api/*) --> API[FastAPI Backend]
+    Chat -- SSE in / HTTP out --> Switch[Switch Bridge]
+    Switch -- room events --> API[FastAPI Backend]
+    API -- approval request --> Chat
+    Chat -- approve/reject --> Switch
+    Switch -- decision --> API
+    API -- persistence --> DB[(SQLite WAL)]
 
-    subgraph Core ["Incident Lifecycle State Machine"]
-        direction TB
-        C1[Approval Gate]:::gate
-        C2[SQLite Persistence]:::db
-        C3[Analytics]:::analytics
-    end
-    API --> Core
-
-    subgraph Switch ["Switch Bridge (Simulated / Live Webhook)"]
-        S[Agent ↔ Team Chat Rooms]:::switch
-    end
-    API -- agent events / chat --> S
-
-    subgraph Agents ["AI Agents"]
-        A1[🤖 Sentinel – Monitor]:::agent
-        A2[🤖 Atlas – Triage]:::agent
-        A3[🤖 Sherlock – Debug]:::agent
-        A4[🤖 Forge – Fix]:::agent
-        A5[🤖 Pilot – Release]:::agent
-        A6[🤖 Chronicle – Report]:::agent
-    end
-    S --> Agents
-
-    H[🧑‍💼 Human – Approval Gate]:::human
-    API -- human decision --> H
-    H -- approve/reject --> API
-
-    classDef page fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef agent fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     classDef human fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef gate fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    classDef db fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    classDef analytics fill:#fff8e1,stroke:#f57f17,stroke-width:2px
-    classDef switch fill:#ede7f6,stroke:#311b92,stroke-width:2px
+    classDef agent fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
 ```
 
-**Workflow:** `alert → backend → Switch → AI agents → dashboard → human approval → rollback → incident resolved`
+### Data Flow
+
+1. **Detection** — Sentinel monitors metrics and detects anomalies (HTTP 500 flood)
+2. **Triage** — Atlas classifies severity and isolates blast radius
+3. **Debug** — Sherlock builds repro cases and identifies root cause
+4. **Fix** — Forge proposes a rollback plan with risk assessment
+5. **Approval** — Human team lead reviews and approves/rejects via Switch chat
+6. **Execute** — Pilot executes the approved rollback
+7. **Report** — Chronicle generates postmortem and MTTR report
+
+---
+
+## 🤖 AI Agents (6 Specialized Agents)
+
+| Agent | Role | Responsibilities | Switch Addressing |
+|-------|------|------------------|-------------------|
+| **Sentinel** | Monitor | Scrape metrics + logs, detect anomalies, page oncall | anyone |
+| **Atlas** | Triage | Classify severity, isolate blast radius, draft incident summary | owner-agents |
+| **Sherlock** | Debug | Build repro cases, correlate traces, identify root cause | owner-agents |
+| **Forge** | Fix | Propose code fix, generate rollback plan, estimate risk | owner-agents |
+| **Pilot** | Release | Execute approved rollouts, verify after deploy, report MTTR | owner-agents |
+| **Chronicle** | Report | Write postmortem, update stakeholders, archive evidence | owner-agents |
+
+### Agent Status States
+- **Working** — Agent is actively processing an incident
+- **Idle** — Agent is waiting for work
+- **Thinking** — Agent is analyzing data
+
+---
+
+## 🔌 Switch Integration (Core Infrastructure)
+
+Switch is the **communication backbone** of OpsPilot. Without Switch, the agent-to-human workflow cannot function.
+
+### Switch Concepts Used
+
+| Concept | Implementation in OpsPilot |
+|---------|---------------------------|
+| **Room = Channel** | Every incident gets `#incident-war-room-<id>` where agents + humans live |
+| **Agent as teammate** | All 6 agents join rooms like human teammates with name + avatar |
+| **Shared log** | All alerts, triage decisions, root causes, approvals written to room log |
+| **Agent protocol** | SSE in / HTTP out — backend emits agent events via Switch SSE |
+| **Bridge** | `switch_client.py` posts events: `incident.opened`, `approval.requested`, `approval.decided`, `action.executed`, `chat.message` |
+| **Human in loop** | Team lead approves/rejects rollback from chat — decision flows back through Switch |
+
+### Events Posted to Switch
+
+```
+incident.opened     → When a new incident is simulated
+approval.requested  → When Forge stages a fix needing human approval
+approval.decided    → When human approves or rejects
+action.executed     → When Pilot executes rollback
+chat.message        → When any participant sends a message
+```
+
+### Modes
+- **Simulated (default)** — Events recorded locally in `switch_log` table, demo never breaks
+- **Live (connected)** — Set `SWITCH_MODE=connected` + `SWITCH_WEBHOOK_URL` for real Switch delivery
+
+---
+
+## 📱 Frontend Pages (8 Pages)
+
+### 1. Overview (Dashboard)
+- System health status (uptime, MTTR, active agents)
+- Live incidents list with severity badges
+- AI agent status overview
+- Switch bridge mode indicator
+- Recent incident feed
+- One-click "Simulate Production Alert" button
+
+### 2. Live Incidents
+- Filterable incident table (All / Active / Awaiting Approval / Resolved)
+- Search by service or title
+- Severity-based sorting (Critical → High → Medium → Low)
+- Click to view incident details
+
+### 3. Incident Detail
+- 5-stage workflow timeline (Detect → Triage → Debug → Approve → Resolve)
+- Root cause analysis from Sherlock
+- Proposed fix from Forge with rollback command
+- Approval gate with Approve/Reject buttons
+- Console output log with color-coded levels
+
+### 4. AI Agents
+- 6 agent cards with capabilities list
+- Current task status per agent
+- Task completion counts
+- Agent orchestration flow visualization
+- Switch delivery health metrics
+
+### 5. War Room
+- Live chat between team and AI agents
+- Role-based message styling (AI Agent = cyan, Human = violet, System = amber)
+- Switch event log sidebar
+- Bridge configuration display
+- Message input with send functionality
+
+### 6. Task Manager
+- Kanban-style columns: Queued / Running / Done / Failed
+- Priority badges (P0 / P1 / P2)
+- Click to advance task status
+- Incident linkage per task
+
+### 7. Approval Center
+- Pending / Approved / Rejected tabs
+- Risk level display (High / Medium / Low)
+- Approve & Execute button (human-in-the-loop gate)
+- Reject button with reason
+- Decision history with timestamps
+
+### 8. Analytics
+- MTTR trend over time
+- Incident volume charts
+- Severity split pie chart
+- Status distribution
+- Agent productivity bar chart
+- Service reliability table
+- Postmortem summary numbers
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Tech | Version |
-|-------|------|---------|
-| **Frontend** | React 18 + Vite + Tailwind CSS 4 + Recharts + React Router | Latest |
-| **Backend** | Python + FastAPI + Uvicorn | 3.14 / 0.115+ |
-| **Database** | SQLite (WAL mode) | `backend/opspilot.db` |
-| **AI Agents** | OpenCode + Codex (simulated in pipeline) | — |
-| **Integration** | Switch+ (simulated default, live via env vars) | — |
-| **Charts** | Recharts | — |
+| Layer | Technology | Version | Purpose |
+|-------|-----------|---------|---------|
+| **Frontend** | React 18 + Vite | ^18.3.1 | UI framework + build tool |
+| **Styling** | Tailwind CSS 4 | ^4.0.0 | Utility-first CSS |
+| **Charts** | Recharts | ^2.13.3 | Data visualization |
+| **Routing** | React Router DOM | ^6.26.2 | Client-side routing |
+| **Backend** | FastAPI + Uvicorn | Latest | Python web framework |
+| **Database** | SQLite (WAL mode) | — | Incident persistence |
+| **AI Agents** | OpenCode + Codex | — | Simulated agent reasoning |
+| **Integration** | Switch+ | — | Agent-team communication |
+| **Icons** | Unicode emojis | — | Visual indicators |
 
 ---
 
-## 🚀 Quick Start (2 Commands)
+## 🚀 Quick Start
 
-### Option A — Production Build (Ek Hi Server, Sabse Easy)
+### Prerequisites
+- Python 3.13+
+- Node.js 18+
+- npm
+
+### Option A — Production Build (Single Server)
 
 ```powershell
-# 1) Frontend build (ek hi baar)
-cd frontend ; npm install ; npm run build ; cd ..
+# 1) Clone the repository
+git clone https://github.com/itsVanshKesharwani/OpsPilot.git
+cd OpsPilot
 
-# 2) Backend deps install
+# 2) Build frontend (one-time)
+cd frontend
+npm install
+npm run build
+cd ..
+
+# 3) Install backend dependencies
 cd backend
 python -m pip install -r requirements.txt
 
-# 3) Server start
+# 4) Start the server
 python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
-Browser kholo → **http://127.0.0.1:8000** 🎉
+Open browser → **http://127.0.0.1:8000** 🎉
 
 ### Option B — Development Mode (Hot Reload)
 
 ```powershell
-.\start.ps1   # ek terminal mein backend + vite dev dono
+.\start.ps1
 ```
 
-- Backend : `http://127.0.0.1:8000` (API + Swagger docs)
+- Backend : `http://127.0.0.1:8000` (API + Swagger docs at `/docs`)
 - Frontend: `http://localhost:5173` (hot reload UI)
 
----
-
-## 🔧 Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SWITCH_MODE` | `simulated` | `simulated` ya `connected` |
-| `SWITCH_WEBHOOK_URL` | — | Switch live webhook URL |
-| `SWITCH_SERVER_URL` | — | Alternate Switch server URL |
-| `PORT` | `8000` | Backend server port |
-
-Live Switch mode example:
+### Option C — Live Switch Mode
 
 ```powershell
 $env:SWITCH_MODE = "connected"
@@ -194,22 +270,26 @@ python -m uvicorn main:app --port 8000
 
 ## 📡 API Reference
 
-| Method | Endpoint | Kaam |
-|--------|----------|------|
-| GET | `/api/health` | Health check |
-| GET | `/api/stats` | Dashboard KPIs |
-| GET | `/api/incidents?status=&q=` | Incident list + timeline |
-| GET | `/api/incidents/{id}` | Single incident + events + approval |
-| POST | `/api/incidents` | ⚡ Simulate production alert |
-| GET | `/api/agents` | AI agents + live status |
-| GET / POST | `/api/tasks`, `/api/tasks/{id}` | Task manager |
-| GET | `/api/approvals?status=` | Approval center |
-| POST | `/api/approvals/{id}/decision` | `{"decision":"approve"}` / `"reject"` |
-| GET / POST | `/api/messages` | War room chat |
-| GET | `/api/analytics` | MTTR, trends, agent performance |
-| GET | `/api/switch` | Switch bridge status + event log |
+All endpoints are under `/api/`:
 
-Open API docs: **http://127.0.0.1:8000/docs**
+| Method | Endpoint | Description | Body |
+|--------|----------|-------------|------|
+| GET | `/api/health` | Health check | — |
+| GET | `/api/stats` | Dashboard KPIs | — |
+| GET | `/api/incidents?status=&q=` | Incident list + timeline | — |
+| GET | `/api/incidents/{id}` | Single incident + events + approval | — |
+| POST | `/api/incidents` | ⚡ Simulate production alert | `{title, service, severity, description, environment}` |
+| GET | `/api/agents` | AI agents + live status | — |
+| GET | `/api/tasks` | List all tasks | — |
+| POST | `/api/tasks/{id}` | Update task status | `{status}` |
+| GET | `/api/approvals?status=` | Approval center | — |
+| POST | `/api/approvals/{id}/decision` | Approve or reject | `{decision: "approve\|reject", approver: "string"}` |
+| GET | `/api/messages` | War room chat messages | — |
+| POST | `/api/messages` | Send war room message | `{author, role, content}` |
+| GET | `/api/analytics` | MTTR, trends, agent performance | — |
+| GET | `/api/switch` | Switch bridge status + event log | — |
+
+**Swagger UI:** http://127.0.0.1:8000/docs
 
 ---
 
@@ -219,7 +299,7 @@ Open API docs: **http://127.0.0.1:8000/docs**
 OpsPilot/
 ├── backend/
 │   ├── main.py           # FastAPI routes + SPA serving
-│   ├── pipeline.py       # Incident state machine (5 stages) ← dil
+│   ├── pipeline.py       # Incident state machine (5 stages)
 │   ├── switch_client.py  # Switch integration layer
 │   ├── db.py             # SQLite schema + helpers
 │   ├── seed.py           # Agents, historical incidents, war room
@@ -227,29 +307,48 @@ OpsPilot/
 │   └── opspilot.db       # SQLite database (auto-generated)
 ├── frontend/
 │   ├── src/
-│   │   ├── pages/        # Overview, Incidents, IncidentDetail, Agents,
-│   │   │                 # WarRoom, Tasks, Approvals, Analytics
-│   │   ├── components/   # Sidebar, Topbar, Timeline, UI
-│   │   ├── api.js  hooks.js  constants.js  App.jsx
-│   ├── dist/             # Built SPA (served by backend in prod)
+│   │   ├── pages/
+│   │   │   ├── Overview.jsx      # Dashboard with stats + live incidents
+│   │   │   ├── Incidents.jsx     # Filterable incident table
+│   │   │   ├── IncidentDetail.jsx # 5-stage workflow + approval
+│   │   │   ├── Agents.jsx        # 6 AI agents + capabilities
+│   │   │   ├── WarRoom.jsx       # Switch-powered chat
+│   │   │   ├── Tasks.jsx         # Task manager kanban
+│   │   │   ├── Approvals.jsx     # Human approval center
+│   │   │   └── Analytics.jsx     # MTTR + charts
+│   │   ├── components/
+│   │   │   ├── Sidebar.jsx       # Navigation with pending counts
+│   │   │   ├── Topbar.jsx        # Simulate alert + clock + toast
+│   │   │   ├── Timeline.jsx      # 5-stage workflow timeline
+│   │   │   └── ui.jsx            # Reusable UI components
+│   │   ├── api.js                # API client
+│   │   ├── hooks.js              # usePoll, timeAgo, fmtClock
+│   │   ├── constants.js          # SEVERITY, STATUS, AGENT_STATUS, STAGES
+│   │   ├── App.jsx               # Router + layout
+│   │   ├── main.jsx              # Entry point
+│   │   └── index.css             # Glassmorphism + animations
+│   ├── dist/                     # Built SPA
 │   ├── vite.config.js
 │   └── package.json
 ├── docs/
-│   └── screenshots/      # Demo screenshots daalo yahan
-├── start.ps1             # Dev mode: backend + frontend together
+│   ├── screenshots/              # Add demo screenshots here
+│   └── demo-script.md            # Demo narrator guide
+├── start.ps1                     # Dev mode startup script
 └── README.md
 ```
 
 ---
 
-## 👥 Team Division (4 Members)
+## 👥 Team Division (4 Members — ShiftSpark)
 
-| Member | Responsibility | Code Kahan Hai |
-|--------|----------------|----------------|
-| **Member 1** | Frontend – Dashboard UI | `frontend/src/**` (7 pages, dark theme, charts) |
-| **Member 2** | Backend – APIs + DB | `backend/main.py`, `db.py` (13 endpoints, SQLite) |
-| **Member 3** | AI Agents – Codex/OpenCode | `backend/pipeline.py` (triage/debug/fix agents) |
-| **Member 4** | Switch integration + testing + demo | `backend/switch_client.py`, demo script, QA |
+| Member | GitHub | Responsibility | Code Location |
+|--------|--------|----------------|---------------|
+| **Vansh Kesharwani (Leader)** | @vanshkes | Frontend – Dashboard UI | `frontend/src/pages/`, `frontend/src/components/` |
+| **Brijesh Maurya** | @shubh.ai | Backend – APIs + DB | `backend/main.py`, `backend/db.py` |
+| **Kartikey Kesarwani** | @kartikeyk | AI Agents – OpenCode/Codex | `backend/pipeline.py` |
+| **Kajal Kesharwani** | @kajalkesharwani | Switch integration + demo QA | `backend/switch_client.py` |
+
+**Team Code:** `codeTDMNJT`
 
 ---
 
@@ -262,45 +361,68 @@ Simulate alert → #9 detected → triage (3.5s) → debug + root cause (6.5s)
 → POST decision=reject on #10 → status=blocked → double decide → HTTP 400
 ```
 
+### Manual Test Checklist
+
+- [ ] Simulate Production Alert creates incident #9+
+- [ ] Sentinel detects HTTP 500 flood
+- [ ] Atlas triages severity + blast radius
+- [ ] Sherlock identifies root cause
+- [ ] Forge proposes rollback plan
+- [ ] Approval Center shows pending approval
+- [ ] Clicking "Approve & Execute" changes status to resolved
+- [ ] Clicking "Reject" changes status to blocked
+- [ ] War Room shows agent messages
+- [ ] Analytics updates MTTR after resolution
+
 ---
 
-## 🐛 Troubleshooting
+## 🏆 Judging Criteria (Flip the Switch)
 
-| Problem | Solution |
-|---------|----------|
-| `ModuleNotFoundError: No module named 'fastapi'` | `cd backend && python -m pip install -r requirements.txt` |
-| `pydantic-core` build fails on Python 3.14 | `pip install --upgrade "pydantic>=2.14" fastapi uvicorn[standard]` |
-| Frontend blank in prod mode | Pehle `cd frontend && npm run build` karo, phir backend start karo |
-| Port 8000 already in use | Doosra port use karo: `--port 8001` |
-| Switch events nahi aa rahe | Confirm karo `SWITCH_MODE=connected` set hai |
+| Criterion | Weight | How OpsPilot Meets It |
+|-----------|--------|----------------------|
+| **Use of Switch** | High | Switch is the communication backbone — War Room = Switch room, agents = teammates, approval flows through Switch SSE/HTTP |
+| **Technical execution** | High | Reproducible: clone → `npm install && build` → `pip install -r requirements.txt` → `uvicorn main:app` |
+| **Creativity & impact** | Medium | Real business problem: production incident MTTR reduced from ~1 hour to ~5 minutes |
+| **Presentation** | Medium | Demo video + comprehensive README clearly show Switch integration |
 
 ---
 
 ## 🔮 Future Scope (Post-Hackathon)
 
+- [ ] Live Switch webhook (connected mode by default)
 - [ ] Real log scraping + real deployment rollback
-- [ ] Production Switch webhook (live mode by default)
-- [ ] Email / Slack notifications on approval
+- [ ] Email / Slack / Teams notifications on approval
 - [ ] Auth + RBAC (admin / engineer / viewer roles)
-- [ ] Incident escalation matrix (auto-page on-call engineer)
+- [ ] Auto-escalation page on-call engineer
 - [ ] Mobile responsive improvements
+- [ ] Dark/light theme toggle
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m "feat: your feature description"`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Open a pull request against `main`
 
 ---
 
 ## 📄 License
 
-MIT — Built for WeMakeDevs × DevTools Academy × Switch+ hackathon.
+MIT License — Built for Flip the Switch Hackathon (WeMakeDevs × DevTools Academy × Switch).
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **WeMakeDevs** — Hackathon platform
-- **DevTools Academy** — Mentorship & resources
-- **Switch+** — Agent communication bridge
-- **OpenCode / Codex** — AI agent reasoning
+- **WeMakeDevs** — Hackathon platform and community
+- **DevTools Academy** — Mentorship and resources
+- **Switch+** — Agent communication bridge infrastructure
+- **OpenCode / Codex** — AI agent reasoning and code generation
 
 ---
 
-> Made with ❤️ by Team OpsPilot  
+> Made with ❤️ by Team OpsPilot · ShiftSpark  
 > *Jab production down ho, jawab kitni der mein milega?*
